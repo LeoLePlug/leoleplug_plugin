@@ -1,7 +1,7 @@
 {
     "name": "LeoLePlug Agency",
     "version": "1.3",
-    "download_url": "https://example.com/path/to/leoleplug-1.3.zip",
+    "download_url": "#",
     "homepage": "https://leoleplug.com/",
     "requires": "1.3",
     "tested": "1.3",
