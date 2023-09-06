@@ -1,27 +1,30 @@
-<?php
-// Définition de la constante pour l'URL de mise à jour
-define('LEOLEPLUG_UPDATE_JSON_URL', 'https://raw.githubusercontent.com/LeoLePlug/leoleplug_plugin/main/leoleplug.json');
+// Définition de la constante pour l'URL de mise à jour JSON
+define('LEOLEPLUG_UPDATE_JSON_URL', 'https://raw.githubusercontent.com/LeoLePlug/leoleplug_plugin/main/update-llp.json');
 
 /**
  * Vérifie s'il y a une mise à jour disponible.
  */
 function leoleplug_check_for_updates() {
     $current_version = get_option('leoleplug_plugin_version');
-    $github_url = 'https://raw.githubusercontent.com/LeoLePlug/leoleplug_plugin/main/plugin-version.txt';
+    $json_data = wp_remote_get(LEOLEPLUG_UPDATE_JSON_URL);
 
-    $response = wp_remote_get($github_url);
-
-    if (is_wp_error($response)) {
+    if (is_wp_error($json_data)) {
         return;
     }
 
-    $remote_version = trim(wp_remote_retrieve_body($response));
+    $body = wp_remote_retrieve_body($json_data);
+    $data = json_decode($body);
 
-    if (version_compare($remote_version, $current_version, '>')) {
-        // Stocke les données de mise à jour pour une utilisation ultérieure
-        set_transient('leoleplug_update_data', $remote_version, DAY_IN_SECONDS);
-        // Ajoute une notification pour informer de la mise à jour
-        add_action('admin_notices', 'leoleplug_display_update_notice');
+    if ($data) {
+        // Stocke l'URL de téléchargement pour une utilisation ultérieure
+        set_transient('leoleplug_download_url', $data->download_url, DAY_IN_SECONDS);
+
+        if (version_compare($data->version, $current_version, '>')) {
+            // Stocke les données de mise à jour pour une utilisation ultérieure
+            set_transient('leoleplug_update_data', $data->version, DAY_IN_SECONDS);
+            // Ajoute une notification pour informer de la mise à jour
+            add_action('admin_notices', 'leoleplug_display_update_notice');
+        }
     }
 }
 
@@ -43,21 +46,13 @@ function leoleplug_display_update_notice() {
  * Gère la mise à jour du plugin.
  */
 function leoleplug_update_plugin() {
-    $json_data = wp_remote_get(LEOLEPLUG_UPDATE_JSON_URL);
+    $download_url = get_transient('leoleplug_download_url');
 
-    if (is_wp_error($json_data)) {
-        return;
-    }
-
-    $body = wp_remote_retrieve_body($json_data);
-    $data = json_decode($body);
-
-    if ($data) {
-        $zip_url = esc_url($data->download_url);
-        $response = wp_safe_remote_get($zip_url);
+    if ($download_url) {
+        $response = wp_safe_remote_get($download_url);
 
         if (!is_wp_error($response)) {
-            $tmp_file = download_url($zip_url);
+            $tmp_file = download_url($download_url);
             if (!is_wp_error($tmp_file)) {
                 $plugin_dir = plugin_dir_path(__FILE__);
                 $dest_file = $plugin_dir . 'leoleplug.zip';
@@ -73,7 +68,10 @@ function leoleplug_update_plugin() {
         }
 
         // Met à jour la version actuelle du plugin dans les options
-        update_option('leoleplug_plugin_version', $data->version);
+        $update_version = get_transient('leoleplug_update_data');
+        if ($update_version) {
+            update_option('leoleplug_plugin_version', $update_version);
+        }
     }
 }
 
