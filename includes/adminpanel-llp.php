@@ -7,7 +7,7 @@ function leoleplug_remove_wp_nodes($wp_admin_bar) {
     $wp_admin_bar->remove_node('documentation');
     $wp_admin_bar->remove_node('support-forums');
     $wp_admin_bar->remove_node('feedback');
-	$wp_admin_bar->remove_node('contribute');
+    $wp_admin_bar->remove_node('contribute');
 }
 
 add_action('admin_bar_menu', 'leoleplug_remove_wp_nodes', 999);
