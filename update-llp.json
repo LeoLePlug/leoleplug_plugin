@@ -1,0 +1,15 @@
+{
+    "name": "LeoLePlug Agency",
+    "version": "1.3",
+    "download_url": "https://example.com/path/to/leoleplug-1.3.zip",
+    "homepage": "https://leoleplug.com/",
+    "requires": "1.3",
+    "tested": "1.3",
+    "last_updated": "2023-06-09",
+    "upgrade_notice": "...",
+    "author": "LeoLePlug",
+    "author_homepage": "https://leoleplug.com/",
+    "sections": {
+        "description": "LeoLePlug Agency"
+    }
+}
