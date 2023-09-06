@@ -1,6 +1,8 @@
 <?php
 // Définition de la constante pour l'URL du fichier .txt de version
 define('LEOLEPLUG_VERSION_TXT_URL', 'https://raw.githubusercontent.com/LeoLePlug/leoleplug_plugin/main/plugin-version.txt');
+// Définition de la constante pour l'URL du fichier .txt de téléchargement
+define('LEOLEPLUG_DOWNLOAD_URL_TXT', 'https://raw.githubusercontent.com/LeoLePlug/leoleplug_plugin/main/update_url.txt');
 
 /**
  * Vérifie s'il y a une mise à jour disponible.
@@ -19,9 +21,14 @@ function leoleplug_check_for_updates() {
         // Stocke les données de mise à jour pour une utilisation ultérieure
         set_transient('leoleplug_update_data', $remote_version, DAY_IN_SECONDS);
 
-        $json_url = 'https://raw.githubusercontent.com/LeoLePlug/leoleplug_plugin/main/update-llp.json';
-        // Stocke l'URL de téléchargement dans une transitoire pour une utilisation ultérieure
-        set_transient('leoleplug_download_url', $json_url, DAY_IN_SECONDS);
+        // Récupère l'URL de téléchargement depuis le fichier .txt
+        $download_url_txt_response = wp_remote_get(LEOLEPLUG_DOWNLOAD_URL_TXT);
+        if (!is_wp_error($download_url_txt_response)) {
+            $download_url = trim(wp_remote_retrieve_body($download_url_txt_response));
+
+            // Stocke l'URL de téléchargement dans une transitoire pour une utilisation ultérieure
+            set_transient('leoleplug_download_url', $download_url, DAY_IN_SECONDS);
+        }
 
         // Ajoute une notification pour informer de la mise à jour
         add_action('admin_notices', 'leoleplug_display_update_notice');
