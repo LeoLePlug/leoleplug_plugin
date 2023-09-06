@@ -21,7 +21,7 @@ function leoleplug_check_for_updates() {
         // Stocke les données de mise à jour pour une utilisation ultérieure
         set_transient('leoleplug_update_data', $remote_version, DAY_IN_SECONDS);
 
-        // Récupère l'URL de téléchargement depuis le fichier .txt
+        // Récupère l'URL du fichier ZIP de mise à jour depuis le fichier .txt
         $download_url_txt_response = wp_remote_get(LEOLEPLUG_DOWNLOAD_URL_TXT);
         if (!is_wp_error($download_url_txt_response)) {
             $download_url = trim(wp_remote_retrieve_body($download_url_txt_response));
@@ -85,28 +85,29 @@ function leoleplug_update_plugin() {
     $download_url = get_transient('leoleplug_download_url');
 
     if ($download_url) {
+        $plugin_dir = plugin_dir_path(__FILE__);
+        $dest_file = $plugin_dir . 'leoleplug.zip';
+
+        // Télécharge le plugin depuis l'URL
         $response = wp_safe_remote_get($download_url);
 
         if (!is_wp_error($response)) {
-            $tmp_file = download_url($download_url);
-            if (!is_wp_error($tmp_file)) {
-                $plugin_dir = plugin_dir_path(__FILE__);
-                $dest_file = $plugin_dir . 'leoleplug.zip';
+            $body = wp_remote_retrieve_body($response);
 
-                if (rename($tmp_file, $dest_file)) {
-                    WP_Filesystem();
-                    $unzipfile = unzip_file($dest_file, $plugin_dir);
-                    if (is_wp_error($unzipfile)) {
-                        unlink($dest_file);
+            // Sauvegarde le contenu dans le fichier zip
+            if (file_put_contents($dest_file, $body)) {
+                WP_Filesystem();
+                $unzipfile = unzip_file($dest_file, $plugin_dir);
+                if (!is_wp_error($unzipfile)) {
+                    // Met à jour la version actuelle du plugin dans les options
+                    $update_version = get_transient('leoleplug_update_data');
+                    if ($update_version) {
+                        update_option('leoleplug_plugin_version', $update_version);
                     }
+                } else {
+                    // Gestion des erreurs lors de l'extraction du zip
                 }
             }
-        }
-
-        // Met à jour la version actuelle du plugin dans les options
-        $update_version = get_transient('leoleplug_update_data');
-        if ($update_version) {
-            update_option('leoleplug_plugin_version', $update_version);
         }
     }
 }
