@@ -7,18 +7,19 @@ define('LEOLEPLUG_UPDATE_JSON_URL', 'https://raw.githubusercontent.com/LeoLePlug
  */
 function leoleplug_check_for_updates() {
     $current_version = get_option('leoleplug_plugin_version');
-    $json_data = wp_remote_get(LEOLEPLUG_UPDATE_JSON_URL);
+    $github_url = 'https://raw.githubusercontent.com/LeoLePlug/leoleplug_plugin/main/plugin-version.txt';
 
-    if (is_wp_error($json_data)) {
+    $response = wp_remote_get($github_url);
+
+    if (is_wp_error($response)) {
         return;
     }
 
-    $body = wp_remote_retrieve_body($json_data);
-    $data = json_decode($body);
+    $remote_version = trim(wp_remote_retrieve_body($response));
 
-    if ($data && version_compare($data->version, $current_version, '>')) {
+    if (version_compare($remote_version, $current_version, '>')) {
         // Stocke les données de mise à jour pour une utilisation ultérieure
-        set_transient('leoleplug_update_data', $data, DAY_IN_SECONDS);
+        set_transient('leoleplug_update_data', $remote_version, DAY_IN_SECONDS);
         // Ajoute une notification pour informer de la mise à jour
         add_action('admin_notices', 'leoleplug_display_update_notice');
     }
