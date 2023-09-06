@@ -1,7 +1,7 @@
 {
-	"name": "LeoLePlug Agency Support",
+	"name": "LeoLePlug Agency",
 	"version": "1.2",
-	"download_url": "https://kdrive.leoleplug.com/app/share/762254/d6de8c70-a86b-4eda-b45a-6ef77d39cf13",
+	"download_url": "https://raw.githubusercontent.com/LeoLePlug/leoleplug_plugin/main/leoleplug.json",
 
 	"homepage": "https://leoleplug.com/",
 	"requires": "1.2",
