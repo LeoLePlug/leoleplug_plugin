@@ -8,7 +8,6 @@ Author URI: https://leoleplug.com/
 
 define('LEOLEPLUG_CURRENT_VERSION', '1.6');
 
-
 // Inclure le fichier de mise à jour
 require_once(plugin_dir_path(__FILE__) . 'includes/maj-llp.php');
 require_once(plugin_dir_path(__FILE__) . 'includes/support-llp.php');
