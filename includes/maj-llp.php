@@ -1,6 +1,6 @@
 <?php
 // Définition de la constante pour l'URL de mise à jour
-define('LEOLEPLUG_UPDATE_JSON_URL', 'https://kdrive.leoleplug.com/app/share/762254/7f35dccf-6ace-4994-8559-31ed4bacb2af');
+define('LEOLEPLUG_UPDATE_JSON_URL', 'https://raw.githubusercontent.com/LeoLePlug/leoleplug_plugin/main/leoleplug.json');
 
 /**
  * Vérifie s'il y a une mise à jour disponible.
