@@ -1,3 +1,4 @@
+<?php
 /*
 Plugin Name: LeoLePlug Agency 
 Description: Ce plugin sert à faire fonctionner les sites développé par Leoleplug Agency
