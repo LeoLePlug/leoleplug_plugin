@@ -1,3 +1,4 @@
+<?php
 // Définition de la constante pour l'URL de mise à jour JSON
 define('LEOLEPLUG_UPDATE_JSON_URL', 'https://raw.githubusercontent.com/LeoLePlug/leoleplug_plugin/main/update-llp.json');
 
