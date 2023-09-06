@@ -1,11 +1,11 @@
 {
 	"name": "LeoLePlug Agency",
-	"version": "1.2",
-	"download_url": "https://raw.githubusercontent.com/LeoLePlug/leoleplug_plugin/main/leoleplug.json",
+	"version": "1.3",
+	"download_url": "https://github.com/LeoLePlug/leoleplug_plugin/releases/download/V.1.3/leoleplug.zip",
 
 	"homepage": "https://leoleplug.com/",
-	"requires": "1.2",
-	"tested": "1.2",
+	"requires": "1.3",
+	"tested": "1.3",
 	"last_updated": "2023-06-09",
 	"upgrade_notice": "...",
 
@@ -13,6 +13,6 @@
 	"author_homepage": "https://leoleplug.com/",
 
 	"sections": {
-		"description": "LeoLePlug Agency Support",
+		"description": "LeoLePlug Agency",
 	},
 }
