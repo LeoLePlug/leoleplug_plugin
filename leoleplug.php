@@ -2,7 +2,7 @@
 /*
 Plugin Name: LeoLePlug Agency 
 Description: Ce plugin sert à faire fonctionner les sites développé par Leoleplug Agency
-Version: 1.2
+Version: 1.3
 Author: LeoLePlug Agency
 Author URI: https://leoleplug.com/
 */
