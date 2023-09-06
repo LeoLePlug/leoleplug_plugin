@@ -7,13 +7,7 @@ define('LEOLEPLUG_UPDATE_JSON_URL', 'https://raw.githubusercontent.com/LeoLePlug
  */
 function leoleplug_check_for_updates() {
     $current_version = get_option('leoleplug_plugin_version');
-    
-    $args = array(
-        'headers' => array(
-            'Authorization' => 'token ' . GITHUB_ACCESS_TOKEN
-        )
-    );
-    $json_data = wp_remote_get(LEOLEPLUG_UPDATE_JSON_URL, $args);
+    $json_data = wp_remote_get(LEOLEPLUG_UPDATE_JSON_URL);
 
     if (is_wp_error($json_data)) {
         return;
@@ -48,12 +42,7 @@ function leoleplug_display_update_notice() {
  * Gère la mise à jour du plugin.
  */
 function leoleplug_update_plugin() {
-    $args = array(
-        'headers' => array(
-            'Authorization' => 'token ' . GITHUB_ACCESS_TOKEN
-        )
-    );
-    $json_data = wp_remote_get(LEOLEPLUG_UPDATE_JSON_URL, $args);
+    $json_data = wp_remote_get(LEOLEPLUG_UPDATE_JSON_URL);
 
     if (is_wp_error($json_data)) {
         return;
@@ -64,7 +53,7 @@ function leoleplug_update_plugin() {
 
     if ($data) {
         $zip_url = esc_url($data->download_url);
-        $response = wp_safe_remote_get($zip_url, $args);
+        $response = wp_safe_remote_get($zip_url);
 
         if (!is_wp_error($response)) {
             $tmp_file = download_url($zip_url);
