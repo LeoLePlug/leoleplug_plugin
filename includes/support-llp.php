@@ -21,7 +21,7 @@ function leoleplug_add_support_menu() {
         'manage_options',
         'leoleplug-support',
         'leoleplug_redirect_to_support',
-        plugin_dir_url(__FILE__) . 'content/icon-llp.png', 
+        plugin_dir_url(dirname(__FILE__)) . 'content/icon-llp.png', 
         26
     );
 }
